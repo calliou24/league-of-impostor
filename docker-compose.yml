@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16 # Using a lightweight Alpine-based PostgreSQL image
+    container_name: league_impostor_db 
+    environment:
+      POSTGRES_DB: league_impostor_db 
+      POSTGRES_USER: user 
+      POSTGRES_PASSWORD: pass 
+    ports:
+      - "5432:5432" # Map host port 5432 to container port 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data # Persistent data storage
+    restart: always # Ensure the container restarts if it stops
+
+volumes:
+  db_data: # Define a named volume for data persistence
