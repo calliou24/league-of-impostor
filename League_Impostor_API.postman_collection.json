@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "league-impostor-api",
+		"name": "League Impostor API",
+		"description": "API collection for League Impostor multiplayer game backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "Create Room",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"ROOM123\",\n    \"player_name\": \"HostPlayer\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms",
+								""
+							]
+						},
+						"description": "Create a new game room with a unique code and host player. The creating player automatically becomes the host. Returns player_id, player_name, and room_code."
+					},
+					"response": []
+				},
+				{
+					"name": "Join Room",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"ROOM123\",\n    \"player_name\": \"Player2\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms/{{room_code}}/join/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms",
+								"{{room_code}}",
+								"join",
+								""
+							]
+						},
+						"description": "Join an existing room with a player name. Sends WebSocket notification to other players in the room when a new player joins. Returns player_id, player_name, and room_code."
+					},
+					"response": []
+				},
+				{
+					"name": "Start Game",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"player_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms/{{room_code}}/start/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms",
+								"{{room_code}}",
+								"start",
+								""
+							]
+						},
+						"description": "Start the game in a room. Only the host player can start the game. Requires at least 3 players in the room. Sets room stage to ROUND and assigns a random League champion character."
+					},
+					"response": []
+				},
+				{
+					"name": "Start Vote Stage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms/{{room_code}}/vote/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms",
+								"{{room_code}}",
+								"vote",
+								""
+							]
+						},
+						"description": "Transition room from ROUND stage to VOTING stage. Can only be called when room is in ROUND stage."
+					},
+					"response": []
+				},
+				{
+					"name": "Finish Voting",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"player_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/rooms/{{room_code}}/finish-voting/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rooms",
+								"{{room_code}}",
+								"finish-voting",
+								""
+							]
+						},
+						"description": "Finish the voting stage and tally votes. Only the host player can end the voting stage. Requires all players to have voted. Can only be called when room is in VOTING stage."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing game rooms"
+		},
+		{
+			"name": "Players",
+			"item": [
+				{
+					"name": "Vote for Player",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"player_id\": 1,\n    \"voted_player_id\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/players/{{room_code}}/vote/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"players",
+								"{{room_code}}",
+								"vote",
+								""
+							]
+						},
+						"description": "Submit a vote for a player during the voting stage. Records which player voted for which player in the current round."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing players in rooms"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "room_code",
+			"value": "ROOM123",
+			"type": "string"
+		}
+	]
+}

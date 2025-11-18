@@ -2,14 +2,15 @@
 
 from rest_framework import serializers
 
-from game.models.room import Room
-
-
 class StartGameSerializer(serializers.Serializer): 
     player_id = serializers.IntegerField()
 
-class CreateRoomSerializer(serializers.ModelSerializer):
+class CreateRoomSerializer(serializers.Serializer):
+    code = serializers.CharField()
+    player_name = serializers.CharField()
 
-    class Meta:
-        model=Room
-        fields=['code']
+class JoinRoomSerializer(serializers.Serializer):
+    player_name = serializers.CharField()
+    
+class EndVotingStageSerializer(serializers.Serializer):
+    player_id = serializers.CharField()

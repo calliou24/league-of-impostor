@@ -7,3 +7,7 @@ class PlayerSerializer(serializers.Serializer):
 class PlayerVoteSerializer(serializers.Serializer):
     player_id = serializers.IntegerField()
     voted_player_id = serializers.IntegerField()
+
+class GivePlayerHost(serializers.Serializer):
+    player_id = serializers.IntegerField()
+    host_player_id = serializers.IntegerField()
